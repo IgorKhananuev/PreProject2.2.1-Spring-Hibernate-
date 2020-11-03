@@ -1,6 +1,6 @@
 package hiber.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -9,13 +9,35 @@ import javax.persistence.*;
 @Table
 public class Car {
 
+    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL)
+    private User user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
     private String model;
 
+    @Column
     private int series;
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "model='" + model + '\'' +
+                ", series=" + series +
+                '}';
+    }
+
+    public Car(String model, int series) {
+        this.model = model;
+        this.series = series;
+    }
+
+    public Car() {
+
+    }
 
     public Long getId() {
         return id;

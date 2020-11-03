@@ -1,10 +1,11 @@
 package hiber.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
 
+@Component
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,15 +26,27 @@ public class User {
 
    public User() {}
 
-   @Autowired
-   @OneToOne(optional = false, cascade = CascadeType.ALL)
-   @JoinColumn(name = "id")
-   private Car car;
-   
+   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @JoinColumn(name = "model")
+   private  Car car;
+
+
+   public User(Car car){
+      this.car = car;
+   }
+
    public User(String firstName, String lastName, String email) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
+   }
+
+
+   public User(String firstName, String lastName, String email, Car car) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.email = email;
+      this.car = car;
    }
 
    public Long getId() {
@@ -66,5 +79,13 @@ public class User {
 
    public void setEmail(String email) {
       this.email = email;
+   }
+
+   public Car getCar() {
+      return car;
+   }
+
+   public void setCar(Car car) {
+      this.car = car;
    }
 }
